@@ -11,6 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import { firebaseConfig, ADMIN_USERNAME, SITE_NAME } from "./firebase-config.js";
 import { KANJI } from "./kanji-data.js";
+import { initPractice, viewVocabHome, viewVocabQuiz, viewSentHome, viewSentQuiz, describeAnswer, QT_LABEL, kindLabel, lessonsLabel, practiceSummaries } from "./practice.js";
 
 // ---------------- Sozlamalar ----------------
 const MASTER_STREAK = 3;   // ketma-ket 3 marta to'g'ri = o'zlashtirilgan
@@ -84,7 +85,9 @@ function overview(ks) {
 function renderHeader(active) {
   const me = S.profile;
   $("#nav").innerHTML = me ? `
-    <a href="#/" class="${active === "home" ? "on" : ""}">Test</a>
+    <a href="#/" class="${active === "home" ? "on" : ""}">Kanji</a>
+    <a href="#/vocab" class="${active === "vocab" ? "on" : ""}">Lug'at</a>
+    <a href="#/sent" class="${active === "sent" ? "on" : ""}">Gaplar</a>
     <a href="#/study" class="${active === "study" ? "on" : ""}">Yodlash</a>
     <a href="#/history" class="${active === "history" ? "on" : ""}">Natijalarim</a>
     ${me.isAdmin ? `<a href="#/admin" class="${active === "admin" ? "on" : ""}">Admin</a>` : ""}` : "";
@@ -252,7 +255,7 @@ async function viewHome() {
     <section class="card"><h2>Oxirgi testlarim</h2>
       ${recent.length ? `<table class="tbl">${recent.map(a => `<tr>
         <td><a href="#/result/${S.user.uid}/${a.id}">${fmtDt(a.createdAt)}</a></td>
-        <td>${a.review ? "Xatolar" : "Unit " + unitsLabel(a.units)}</td>
+        <td>${attLabel(a)}</td>
         <td class="r"><span class="score ${scoreCls(a.correct, a.total)}">${a.correct}/${a.total}</span></td></tr>`).join("")}</table>`
       : `<p class="muted">Hali test ishlamadingiz. Birinchisini boshlang!</p>`}
     </section>
@@ -480,12 +483,51 @@ async function saveAttempt(cfg, results, duration) {
 }
 
 // ---------------- Natija ----------------
+function attLabel(a) {
+  const k = a.kind || "kanji";
+  if (k === "kanji") return a.review ? "Kanji · xatolar" : "Kanji · Unit " + unitsLabel(a.units);
+  return kindLabel(k) + (a.review ? " · xatolar" : " · " + lessonsLabel(a.units) + "-mavzu");
+}
+const modeLabel = a => (a.kind || "kanji") === "kanji" ? (MODES[a.mode] || a.mode) : String(a.mode || "").split(",").map(m => QT_LABEL[m] || (m === "mix" ? "Aralash" : m)).join(", ");
+
+async function viewPracticeResult(uid, aid, a, usnap) {
+  const p = pct(a.correct, a.total), wrong = a.answers.filter(x => !x.ok), mine = uid === S.user.uid, kind = a.kind;
+  const title = p >= 90 ? "素晴らしい! Ajoyib!" : p >= 70 ? "よくできました! Yaxshi!" : p >= 50 ? "がんばって! Yomon emas" : "Mashq qilamiz! 頑張ろう";
+  const base = kind === "vocab" ? "#/vquiz" : "#/squiz";
+  const again = kind === "vocab" ? `${base}?l=${(a.units || []).join(",")}&mode=${a.mode}&opts=${a.opts}&n=${a.total}`
+    : `${base}?l=${(a.units || []).join(",")}&t=${a.mode}&opts=${a.opts}&n=${a.total}`;
+  const reviewUrl = kind === "vocab" ? "#/vquiz?review=1&mode=mix&opts=8&n=100" : "#/squiz?review=1&t=u2j,j2u,order,fill&opts=6&n=100";
+  page(`
+  <section class="card result-head">
+    <div class="ring" style="--p:${p}"><div><b>${p}%</b><span>${a.correct}/${a.total}</span></div></div>
+    <div class="rh-text"><h1>${title}</h1>
+      <p class="muted">${usnap ? `<b>${esc(usnap.data()?.username)}</b> · ` : ""}${fmtDt(a.createdAt)} · ${esc(attLabel(a))} · ${esc(modeLabel(a))} · vaqt ${fmtDur(a.duration)}</p>
+      <div class="actions">
+        ${mine && wrong.length ? `<a class="btn primary" href="${reviewUrl}">Xatolar ustida ishlash</a>` : ""}
+        ${mine && !a.review ? `<a class="btn" href="${again}">Yana shu test</a>` : ""}
+        <a class="btn ghost" href="${mine ? (kind === "vocab" ? "#/vocab" : "#/sent") : "#/admin/user/" + uid}">${mine ? "Orqaga" : "← Orqaga"}</a>
+      </div></div>
+  </section>
+  ${wrong.length ? `<h2 class="sec">Xatolar — shularni takrorlang</h2>
+  <div class="wrong-list">${wrong.map(x => { const d = describeAnswer(kind, x); return `
+    <div class="card wcard2"><div class="w2-main">${d.main}</div><div class="w2-sub">${d.sub}</div>
+      <div class="wc">Sizning javobingiz: <s>${esc(x.ch)}</s> · <span class="muted">${esc(QT_LABEL[x.qt] || x.qt)}</span></div>${d.gram || ""}</div>`; }).join("")}
+  </div>` : ""}
+  <h2 class="sec">Barcha javoblar</h2>
+  <div class="card"><div class="tbl-wrap"><table class="tbl"><tr><th>#</th><th>${kind === "vocab" ? "So'z" : "Gap"}</th><th>Turi</th><th>Javob</th><th class="r">Natija</th></tr>
+    ${a.answers.map((x, i) => { const d = describeAnswer(kind, x); return `<tr><td class="muted">${i + 1}</td><td><div class="jp-s">${d.main}</div><small class="muted">${d.sub}</small></td>
+      <td>${esc(QT_LABEL[x.qt] || x.qt)}</td><td>${esc(x.ch)}</td>
+      <td class="r">${x.ok ? `<span class="tag ok">✓</span>` : `<span class="tag bad">✗</span>`}</td></tr>`; }).join("")}
+  </table></div></div>`, mine ? "history" : "admin");
+}
+
 async function viewResult(uid, aid) {
   loading();
   if (uid !== S.user.uid && !S.profile.isAdmin) return errorPage("Bu natijani ko'rishga ruxsat yo'q.", "禁");
   const [snap, usnap] = await Promise.all([getDoc(doc(db, "users", uid, "attempts", aid)),
     uid === S.user.uid ? Promise.resolve(null) : getDoc(doc(db, "users", uid))]);
   if (!snap.exists()) return errorPage("Natija topilmadi.");
+  if (snap.data().kind && snap.data().kind !== "kanji") return viewPracticeResult(uid, aid, snap.data(), usnap);
   const a = snap.data(), p = pct(a.correct, a.total), wrong = a.answers.filter(x => !x.ok), mine = uid === S.user.uid;
   const title = p >= 90 ? "素晴らしい! Ajoyib!" : p >= 70 ? "よくできました! Yaxshi!" : p >= 50 ? "がんばって! Yomon emas" : "Mashq qilamiz! 頑張ろう";
   page(`
@@ -517,9 +559,10 @@ async function viewHistory(uid) {
   loading();
   const adminView = uid !== S.user.uid;
   if (adminView && !S.profile.isAdmin) return errorPage("Bu sahifa faqat admin uchun.", "禁");
-  const [usnap, ks, asnap] = await Promise.all([
+  const [usnap, ks, asnap, ps] = await Promise.all([
     getDoc(doc(db, "users", uid)), loadKstats(uid),
     getDocs(query(collection(db, "users", uid, "attempts"), orderBy("createdAt", "desc"), limit(100))),
+    practiceSummaries(uid),
   ]);
   if (!usnap.exists()) return errorPage("Foydalanuvchi topilmadi.");
   const who = usnap.data(), ov = overview(ks), atts = asnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -541,13 +584,21 @@ async function viewHistory(uid) {
     <div class="kpi"><b>${ov.answered}</b><span>javob berilgan</span></div>
     <div class="kpi"><b>${who.attempts || 0}</b><span>test</span></div>
   </div>
-  <section class="card"><h2>Unitlar bo'yicha</h2><div class="unit-rows">
+  <div class="two">
+    ${[["vocab", "Lug'at", ps.vocab, "#/vquiz?review=1&mode=mix&opts=8&n=100", "#/vocab"], ["sent", "Gaplar", ps.sent, "#/squiz?review=1&t=u2j,j2u,order,fill&opts=6&n=100", "#/sent"]].map(([k, t, sm, rv, home]) => `
+    <section class="card"><div class="sec-head"><h2>${t}</h2>${!adminView ? `<a class="btn sm" href="${home}">Ochish</a>` : ""}</div>
+      <p><b>${sm.mastered}</b> ta o'zlashtirilgan · aniqlik <b>${sm.acc}%</b> · ${sm.answered} ta javob</p>
+      ${sm.review.length ? `<p class="muted">Xatolar ro'yxatida: ${sm.review.length} ta ${!adminView ? `· <a href="${rv}">xatolar bo'yicha test</a>` : ""}</p>
+        <div class="kanji-chips small-chips">${sm.review.slice(0, 20).map(it => `<span class="kchip"><small>${esc(k === "vocab" ? it.kana : it.uz)}</small></span>`).join("")}</div>` : `<p class="muted">Xatolar yo'q.</p>`}
+    </section>`).join("")}
+  </div>
+  <section class="card"><h2>Kanji: unitlar bo'yicha</h2><div class="unit-rows">
     ${ov.units.map(u => `<div class="urow"><b>Unit ${u.u}</b><span class="bar"><i style="width:${pct(u.mastered, u.n)}%"></i></span>
       <span>${u.mastered}/${u.n}</span><span class="muted">${u.tried ? u.acc + "% aniqlik" : "boshlanmagan"}</span>
       ${adminView ? "<span></span>" : `<a href="#/study?units=${u.u}">yodlash</a>`}</div>`).join("")}
   </div></section>
   <section class="card">
-    <div class="sec-head"><h2>Xatolar ro'yxati <small class="muted">(${ov.review.length})</small></h2>
+    <div class="sec-head"><h2>Kanji: xatolar ro'yxati <small class="muted">(${ov.review.length})</small></h2>
       ${ov.review.length && !adminView ? `<a class="btn primary sm" href="#/quiz?review=1&mode=mix&opts=8&n=112">Xatolar bo'yicha test</a>` : ""}</div>
     ${ov.review.length ? `<div class="kanji-chips">${ov.review.map(k => `<span class="kchip" title="${esc(k.m)} — ${esc(readings(k))}"><b>${k.k}</b><small>${esc(k.m)}</small><em>✗${ks[k.id].w}</em></span>`).join("")}</div>
       <p class="hint">Kanji ketma-ket 2 marta to'g'ri topilganda bu ro'yxatdan avtomatik chiqadi.</p>` : `<p class="muted">Xatolar yo'q. 🎉</p>`}
@@ -557,9 +608,9 @@ async function viewHistory(uid) {
     ${ov.weak.map(([k, s]) => `<tr><td class="jk">${k.k}</td><td>${esc(k.m)}</td><td>${esc(readings(k))}</td><td class="r">${s.r}</td><td class="r"><b class="red">${s.w}</b></td></tr>`).join("")}
   </table></section>` : ""}
   <section class="card"><h2>Testlar tarixi</h2>
-    ${atts.length ? `<div class="tbl-wrap"><table class="tbl"><tr><th>Sana</th><th>Unitlar</th><th>Turi</th><th>Variant</th><th>Vaqt</th><th class="r">Natija</th></tr>
-      ${atts.map(a => `<tr><td><a href="#/result/${uid}/${a.id}">${fmtDt(a.createdAt)}</a></td><td>${a.review ? "Xatolar" : unitsLabel(a.units)}</td>
-        <td>${MODES[a.mode]}</td><td>${a.opts}</td><td>${fmtDur(a.duration)}</td>
+    ${atts.length ? `<div class="tbl-wrap"><table class="tbl"><tr><th>Sana</th><th>Bo'lim</th><th>Turi</th><th>Variant</th><th>Vaqt</th><th class="r">Natija</th></tr>
+      ${atts.map(a => `<tr><td><a href="#/result/${uid}/${a.id}">${fmtDt(a.createdAt)}</a></td><td>${esc(attLabel(a))}</td>
+        <td>${esc(modeLabel(a))}</td><td>${a.opts}</td><td>${fmtDur(a.duration)}</td>
         <td class="r"><span class="score ${scoreCls(a.correct, a.total)}">${a.correct}/${a.total} · ${pct(a.correct, a.total)}%</span></td></tr>`).join("")}
     </table></div>` : `<p class="muted">Hali test yo'q.</p>`}
   </section>`, adminView ? "admin" : "history");
@@ -582,7 +633,7 @@ async function adminAction(uid, who, act, atts) {
       if (act === "delete" && self) return alert("O'zingizni o'chira olmaysiz.");
       if (!confirm(act === "delete" ? `${who.username} butunlay o'chiriladi. Davom etasizmi?` : `${who.username} ning barcha natijalari o'chiriladi. Davom etasizmi?`)) return;
       const all = await getDocs(collection(db, "users", uid, "attempts"));
-      const refs = [...all.docs.map(d => d.ref), doc(db, "users", uid, "meta", "kstats")];
+      const refs = [...all.docs.map(d => d.ref), ...["kstats", "vstats", "sstats"].map(m => doc(db, "users", uid, "meta", m))];
       for (let i = 0; i < refs.length; i += 400) {
         const b = writeBatch(db); refs.slice(i, i + 400).forEach(r => b.delete(r)); await b.commit();
       }
@@ -683,6 +734,8 @@ async function viewStudy(params) {
   draw();
 }
 
+initPractice({ db, S, page, loading, flash, go, setCleanup: fn => { quizCleanup = fn; } });
+
 // ---------------- Router ----------------
 async function route() {
   if (quizCleanup) { quizCleanup(); quizCleanup = null; }
@@ -700,6 +753,10 @@ async function route() {
       case undefined: return await viewHome();
       case "login": case "register": return go("#/");
       case "study": return await viewStudy(params);
+      case "vocab": return await viewVocabHome(params);
+      case "vquiz": return await viewVocabQuiz(params);
+      case "sent": return await viewSentHome(params);
+      case "squiz": return await viewSentQuiz(params);
       case "quiz": return await viewQuiz(params);
       case "result": return await viewResult(parts[1], parts[2]);
       case "history": return await viewHistory(S.user.uid);
