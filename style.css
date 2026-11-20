@@ -401,3 +401,11 @@ h3.sec{font-size:16px}
   .type-box{flex-direction:column}
   .ans-input{font-size:20px!important}
 }
+
+/* til tanlash */
+.langsw{display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;margin-left:auto}
+.nav+.langsw{margin-left:6px}
+.langsw button{border:0;background:none;color:#cfc6b6;font:800 11px Manrope,sans-serif;padding:5px 8px;border-radius:999px;cursor:pointer;letter-spacing:.04em}
+.langsw button.on{background:#fff;color:var(--ink)}
+.langsw button:hover:not(.on){color:#fff}
+@media (max-width:640px){ .langsw{margin-left:auto} .nav+.langsw{margin-left:auto} }

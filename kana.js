@@ -1,4 +1,5 @@
 // Romaji → kana konvertor va ekrandagi hiragana/katakana klaviatura.
+import { t } from "./i18n.js?v=7";
 
 // ---------- Romaji jadvali ----------
 const T = {};
@@ -139,15 +140,15 @@ export function attachKana(input, holder, { onEnter } = {}) {
           <button type="button" class="kb-k kb-mode ${!kata && !nums ? "on" : ""}" data-f="hira">あ</button>
           <button type="button" class="kb-k kb-mode ${kata && !nums ? "on" : ""}" data-f="kata">ア</button>
           <button type="button" class="kb-k kb-mode ${nums ? "on" : ""}" data-f="nums">1?</button>
-          <button type="button" class="kb-k" data-f="daku" title="dakuten: か→が">゛</button>
-          <button type="button" class="kb-k" data-f="handaku" title="handakuten: は→ぱ">゜</button>
-          <button type="button" class="kb-k" data-f="small" title="kichik: や→ゃ, つ→っ">小</button>
+          <button type="button" class="kb-k" data-f="daku" title="${t("kb_daku")}">゛</button>
+          <button type="button" class="kb-k" data-f="handaku" title="${t("kb_handaku")}">゜</button>
+          <button type="button" class="kb-k" data-f="small" title="${t("kb_small")}">小</button>
           <button type="button" class="kb-k" data-c="ー">ー</button>
           <button type="button" class="kb-k kb-wide" data-c=" ">␣</button>
           <button type="button" class="kb-k kb-del" data-f="del">⌫</button>
         </div>
         <div class="kb-quick">${["ゃ", "ゅ", "ょ", "っ"].map(c => `<button type="button" class="kb-k" data-c="${ch(c)}">${ch(c)}</button>`).join("")}
-          <span class="kb-hint">Kompyuterda lotincha ham yozsa bo'ladi: <b>kya</b> → ${ch("きゃ")}, <b>kitte</b> → ${ch("きって")}, <b>nn</b> → ${ch("ん")}${kata ? "" : ", katta harf → katakana"}</span></div>
+          <span class="kb-hint">${t("kb_hint")}: <b>kya</b> → ${ch("きゃ")}, <b>kitte</b> → ${ch("きって")}, <b>nn</b> → ${ch("ん")}${kata ? "" : ", " + t("kb_upper")}</span></div>
       </div>`;
   };
   holder.addEventListener("pointerdown", e => { if (e.target.closest(".kb-k")) e.preventDefault(); });
