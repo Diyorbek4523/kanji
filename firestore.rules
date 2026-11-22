@@ -23,11 +23,11 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read: if signedIn();
-      // "okaginam" login bilan ro'yxatdan o'tgan odam avtomatik admin bo'ladi
+      // "kenjayev" login bilan ro'yxatdan o'tgan odam avtomatik admin bo'ladi
       allow create: if signedIn() && me() == uid
         && request.resource.data.username_lc == request.resource.data.username.lower()
         && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username_lc)).data.uid == uid
-        && request.resource.data.isAdmin == (request.resource.data.username_lc == 'okaginam')
+        && request.resource.data.isAdmin == (request.resource.data.username_lc == 'kenjayev')
         && request.resource.data.disabled == false;
       allow update: if isAdmin() || (signedIn() && me() == uid
         && resource.data.disabled == false

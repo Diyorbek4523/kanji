@@ -10,5 +10,5 @@ export const firebaseConfig = {
 };
 
 // Shu login bilan ro'yxatdan o'tgan odam avtomatik admin bo'ladi (firestore.rules da ham shu nom yozilgan).
-export const ADMIN_USERNAME = "okaginam";
+export const ADMIN_USERNAME = "kenjayev";
 export const SITE_NAME = "Kanji Dojo";
