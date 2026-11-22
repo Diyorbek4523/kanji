@@ -280,12 +280,64 @@ const RAW = {
     ["これから", "", "endi, hozirdan", "▶️"],
     ["いただきます", "", "Yoqimli ishtaha (ovqatdan oldin)", "🙏"],
   ],
+  8: [
+    ["ハンサム[な]", "", "xushro'y, kelishgan (erkakka nisbatan)", "🤵"],
+    ["きれい[な]", "", "chiroyli, go'zal; toza", "💐"],
+    ["しずか[な]", "静か[な]", "tinch, osoyishta", "🤫"],
+    ["にぎやか[な]", "", "gavjum, serqatnov", "🎉"],
+    ["ゆうめい[な]", "有名[な]", "mashhur", "⭐"],
+    ["しんせつ[な]", "親切[な]", "mehribon, xushmuomala", "🤗"],
+    ["げんき[な]", "元気[な]", "sog'lom, baquvvat", "💪"],
+    ["ひま[な]", "暇[な]", "bo'sh (vaqti bor)", "🛋️"],
+    ["べんり[な]", "便利[な]", "qulay", "👍"],
+    ["すてき[な]", "", "ajoyib, juda chiroyli", "✨"],
+    ["おおきい", "大きい", "katta", "🐘"],
+    ["ちいさい", "小さい", "kichik", "🐜"],
+    ["あたらしい", "新しい", "yangi", "🆕"],
+    ["ふるい", "古い", "eski", "🏚️"],
+    ["いい", "", "yaxshi", "👌", ["よい"]],
+    ["わるい", "悪い", "yomon", "👎"],
+    ["あつい", "暑い・熱い", "issiq (havo); qaynoq (narsa)", "🔥"],
+    ["さむい", "寒い", "sovuq (havo)", "🥶"],
+    ["つめたい", "冷たい", "sovuq (ushlaganda: suv, ichimlik)", "🧊"],
+    ["むずかしい", "難しい", "qiyin", "🧩"],
+    ["やさしい", "易しい", "oson", "🙂"],
+    ["たかい", "高い", "qimmat; baland", "🗼"],
+    ["やすい", "安い", "arzon", "🏷️"],
+    ["ひくい", "低い", "past (bo'yi)", "⬇️"],
+    ["おもしろい", "", "qiziqarli", "😄"],
+    ["おいしい", "", "mazali", "😋"],
+    ["いそがしい", "忙しい", "band", "⏳"],
+    ["たのしい", "楽しい", "maroqli, quvnoq", "🥳"],
+    ["しろい", "白い", "oq", "⚪"],
+    ["くろい", "黒い", "qora", "⚫"],
+    ["あかい", "赤い", "qizil", "🔴"],
+    ["あおい", "青い", "ko'k", "🔵"],
+    ["さくら", "桜", "sakura (olcha guli)", "🌸"],
+    ["やま", "山", "tog'", "⛰️"],
+    ["まち", "町", "(kichik) shahar", "🏘️"],
+    ["たべもの", "食べ物", "ovqat, yegulik", "🍱"],
+    ["ところ", "所", "joy", "📍"],
+    ["りょう", "寮", "yotoqxona", "🏢"],
+    ["べんきょう", "勉強", "o'qish, mashg'ulot", "📚"],
+    ["せいかつ", "生活", "turmush, hayot", "🏡"],
+    ["しごと", "仕事", "ish", "💼", ["おしごと"]],
+    ["どう", "", "qanday, qanaqa", "❓"],
+    ["どんな", "", "qanday ... (ot oldidan)", "❔"],
+    ["どれ", "", "qaysi (uch va undan ko'p narsadan)", "🤔"],
+    ["とても", "", "juda", "‼️"],
+    ["あまり", "", "uncha ... emas (inkor bilan)", "🤏"],
+    ["そして", "", "va, yana; keyin", "➕"],
+  ],
 };
 
 export const LESSONS = Object.keys(RAW).map(Number).sort((a, b) => a - b);
 export const VOCAB = [];
 for (const l of LESSONS) {
-  RAW[l].forEach(([kana, kanji, uz, p, alt]) => {
-    VOCAB.push({ id: `${l}:${kana}`, l, kana, kanji, uz, p, alt: alt || [] });
+  RAW[l].forEach(([kana0, kanji0, uz, p, alt]) => {
+    // "[な]" — na-sifat belgisi: ko'rsatishda qoladi, javobda "な" bilan ham, usiz ham qabul qilinadi
+    const na = kana0.endsWith("[な]");
+    const kana = kana0.replace("[な]", ""), kanji = kanji0.replace("[な]", "");
+    VOCAB.push({ id: `${l}:${kana}`, l, kana, kanji, uz, p, na, alt: [...(alt || []), ...(na ? [kana + "な"] : [])] });
   });
 }

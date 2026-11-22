@@ -1,9 +1,9 @@
 // Tarjimalar: o'zbek (uz), ingliz (en), rus (ru). Til tanlovi brauzerda saqlanadi.
-import { KANJI } from "./kanji-data.js?v=7";
-import { VOCAB } from "./vocab-data.js?v=7";
-import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=7";
-import { CONTENT_EN } from "./content-en.js?v=7";
-import { CONTENT_RU } from "./content-ru.js?v=7";
+import { KANJI } from "./kanji-data.js?v=8";
+import { VOCAB } from "./vocab-data.js?v=8";
+import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=8";
+import { CONTENT_EN } from "./content-en.js?v=8";
+import { CONTENT_RU } from "./content-ru.js?v=8";
 
 export const LANGS = ["uz", "en", "ru"];
 let lang = (() => {
@@ -128,7 +128,7 @@ const D = {
     opts_hint: "More options make guessing harder — your memory works harder.",
     nq_hint: "If the selected units have fewer kanji, all of them are asked.", start_test: "Start test",
     recent_tests: "My recent tests", no_tests_yet: "No tests yet. Start your first one!",
-    rating: "Leaderboard", rating_empty: "The leaderboard is empty.", sel_units: "{0} units · {1} kanji", pick_unit: "Select at least one unit",
+    rating: "Leaderboard", rating_empty: "The leaderboard is empty.", sel_units: "Units: {0} · kanji: {1}", pick_unit: "Select at least one unit",
     demo_day: "day",
     km_k2h: "Kanji → reading", km_h2k: "Reading → kanji", km_p2k: "Picture & meaning → kanji", km_k2m: "Kanji → meaning", km_mix: "Mixed",
     kmd_k2h: "You see a kanji — find its reading", kmd_h2k: "You see a reading — find the kanji", kmd_p2k: "Picture and meaning — find the kanji",
@@ -174,7 +174,7 @@ const D = {
     lessons: "Lessons", type_placeholder: "Type your answer (kana)…", check: "Check", order_ph: "Tap the words in the right order…",
     kana_note: "Correct, but mind the katakana/hiragana difference.", you_wrote: "You wrote",
     demo_book: "book", words_mistakes_n: "You made mistakes on {0} words.", word_list: "Word list", mistake_tag: "mistake",
-    sel_lessons_words: "{0} lessons · {1} words", pick_lesson: "Select at least one lesson", no_mistakes_vocab: "No vocabulary mistakes — well done!",
+    sel_lessons_words: "Lessons: {0} · words: {1}", pick_lesson: "Select at least one lesson", no_mistakes_vocab: "No vocabulary mistakes — well done!",
     other_form: "Other form",
     vm_w2m: "Word → meaning", vm_m2w: "Meaning → word", vm_k2r: "Kanji → reading", vm_type: "Type the answer", vm_mix: "Mixed",
     vmd_w2m: "Japanese word — find its meaning", vmd_m2w: "Meaning — find the Japanese word", vmd_k2r: "Find the reading of a word written in kanji",
@@ -183,7 +183,7 @@ const D = {
     vq_type: "Type it in Japanese", vq_type_kata: "Type it in Japanese (katakana)",
     sent_mistakes_n: "You made mistakes on {0} sentences.", task_types: "Task types", multi_ok: "(you can choose several)",
     grammar_and_sent: "Grammar and sentences", sentences: "Sentences", textbook: "textbook", pick_task: "Select at least one task type",
-    sel_lessons_sent: "{0} lessons · {1} sentences", no_mistakes_sent: "No sentence mistakes — well done!",
+    sel_lessons_sent: "Lessons: {0} · sentences: {1}", no_mistakes_sent: "No sentence mistakes — well done!",
     also_correct: "This order is also correct",
     st_u2j: "Translation → Japanese", st_j2u: "Japanese → translation", st_order: "Word order", st_fill: "Fill in the blank", st_type: "Write the translation",
     std_u2j: "Choose the Japanese translation from options", std_j2u: "Choose the meaning from options", std_order: "Build a correct sentence from given words",

@@ -827,7 +827,54 @@ export const CONTENT_EN = {
 "7:もう": "already",
 "7:まだ": "not yet",
 "7:これから": "from now on",
-"7:いただきます": "Thank you for the food (before eating)"
+"7:いただきます": "Thank you for the food (before eating)",
+"8:ハンサム": "handsome (about men)",
+"8:きれい": "beautiful, pretty; clean",
+"8:しずか": "quiet",
+"8:にぎやか": "lively, busy",
+"8:ゆうめい": "famous",
+"8:しんせつ": "kind",
+"8:げんき": "healthy, energetic",
+"8:ひま": "free (have time)",
+"8:べんり": "convenient",
+"8:すてき": "wonderful, lovely",
+"8:おおきい": "big",
+"8:ちいさい": "small",
+"8:あたらしい": "new",
+"8:ふるい": "old (things)",
+"8:いい": "good",
+"8:わるい": "bad",
+"8:あつい": "hot (weather); hot (things)",
+"8:さむい": "cold (weather)",
+"8:つめたい": "cold (to the touch: water, drinks)",
+"8:むずかしい": "difficult",
+"8:やさしい": "easy",
+"8:たかい": "expensive; high, tall",
+"8:やすい": "cheap",
+"8:ひくい": "low, short",
+"8:おもしろい": "interesting",
+"8:おいしい": "delicious",
+"8:いそがしい": "busy",
+"8:たのしい": "fun, enjoyable",
+"8:しろい": "white",
+"8:くろい": "black",
+"8:あかい": "red",
+"8:あおい": "blue",
+"8:さくら": "cherry blossom (sakura)",
+"8:やま": "mountain",
+"8:まち": "town",
+"8:たべもの": "food",
+"8:ところ": "place",
+"8:りょう": "dormitory",
+"8:べんきょう": "study, studies",
+"8:せいかつ": "life, daily life",
+"8:しごと": "work, job",
+"8:どう": "how",
+"8:どんな": "what kind of ...",
+"8:どれ": "which one (of three or more)",
+"8:とても": "very",
+"8:あまり": "not very (with negative)",
+"8:そして": "and, also"
 },
 "sent": {
 "w1-1q": "Are you Mr. Miller?",
@@ -1005,7 +1052,42 @@ export const CONTENT_EN = {
 "x7-8": "I cut paper with scissors.",
 "x7-9": "I gave flowers to my mother.",
 "x7-10": "\"Arigatou\" is \"Thank you\" in English.",
-"x7-11": "I call a friend on the phone."
+"x7-11": "I call a friend on the phone.",
+"x8-1": "The cherry blossoms are beautiful, aren't they!",
+"x8-2": "This town is lively.",
+"x8-3": "Is that mountain high?",
+"x8-4": "Yes, it's very high.",
+"x8-5": "Is Japanese food delicious?",
+"x8-6": "Yes, it's very delicious.",
+"x8-7": "What kind of town is Nara?",
+"x8-8": "It's an old town.",
+"x8-9": "How is life in Japan?",
+"x8-10": "It's fun.",
+"x8-11": "Is this book interesting?",
+"x8-12": "No, it's not very interesting.",
+"x8-13": "This room is not quiet.",
+"x8-14": "Mr. Miller is a handsome man.",
+"x8-15": "Mr. Watt is a kind teacher.",
+"x8-16": "How are your Japanese studies?",
+"x8-17": "It's difficult, but interesting.",
+"x8-18": "How is your work?",
+"x8-19": "I'm busy, but it's fun.",
+"x8-20": "Which one is your bag?",
+"x8-21": "That red bag.",
+"x8-22": "It's cold today, isn't it?",
+"x8-23": "This coffee isn't very hot.",
+"x8-24": "Is Mr. Yamada well?",
+"x8-25": "Are you free tomorrow?",
+"x8-26": "This town is not convenient.",
+"x8-27": "I bought a red car.",
+"x8-28": "Tokyo is a lively city.",
+"x8-29": "This watch is not expensive.",
+"x8-30": "This water is cold.",
+"x8-31": "This town is beautiful. And it's quiet.",
+"x8-32": "This camera is not good.",
+"x8-33": "Fuji is a famous mountain.",
+"x8-34": "The dormitory is new.",
+"x8-35": "My room is small."
 },
 "gram": {
 "1a": [
@@ -1183,6 +1265,34 @@ export const CONTENT_EN = {
 "7e": [
 "もう V ました ／ まだです",
 "もう means \"already\". Answer: はい、もう ～ました or いいえ、まだです (\"no, not yet\")."
+],
+"8a": [
+"N は な-adj です ／ い-adj です",
+"An adjective as the predicate: この まちは きれいです (na-adjective, な disappears before です), この まちは おもしろいです (i-adjective)."
+],
+"8b": [
+"な-adj じゃ ありません ／ い-adj くないです",
+"Negative: na-adjectives — じゃ(では) ありません; i-adjectives — replace the final い with くないです: たかい → たかくないです. Exception: いい → よくないです."
+],
+"8c": [
+"な-adj な N ／ い-adj N",
+"Before a noun: na-adjectives take な (ゆうめいな まち), i-adjectives come directly (ふるい まち)."
+],
+"8d": [
+"N は どうですか ／ どんな N",
+"どう — \"how is it?\" (asking for an impression): にほんの せいかつは どうですか. どんな + noun — \"what kind of ...?\": ならは どんな まちですか."
+],
+"8e": [
+"とても ／ あまり ～ない",
+"とても — \"very\" (with positive forms). あまり — \"not very\", only with negatives: あまり おもしろくないです."
+],
+"8f": [
+"S1 が、S2 ／ そして",
+"が between sentences means \"but\": むずかしいですが、おもしろいです. そして — \"and, also\": adds a second sentence."
+],
+"8g": [
+"どれ",
+"どれ — \"which one?\" (out of three or more things)."
 ]
 }
 };

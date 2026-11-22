@@ -2,10 +2,10 @@
 import {
   doc, getDoc, collection, writeBatch,
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-import { VOCAB, LESSONS } from "./vocab-data.js?v=7";
-import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=7";
-import { attachKana, normJP, toHira } from "./kana.js?v=7";
-import { t } from "./i18n.js?v=7";
+import { VOCAB, LESSONS } from "./vocab-data.js?v=8";
+import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=8";
+import { attachKana, normJP, toHira } from "./kana.js?v=8";
+import { t } from "./i18n.js?v=8";
 
 let C; // app.js dan beriladigan yordamchilar
 export function initPractice(ctx) { C = ctx; }
@@ -26,16 +26,19 @@ const SYN = [["だれ", "どなた"], ["なん", "なに"], ["あのひと", "�
   ["あそこ", "あちら"], ["どこ", "どちら"], ["ノート", "てちょう"], ["えんぴつ", "シャープペンシル"], ["コンピューター", "パソコン"],
   ["でんしゃ", "ふつう", "きゅうこう", "とっきゅう", "しんかんせん"], ["あさ", "けさ"], ["ばん", "こんばん"], ["にく", "ぎゅうにく", "ぶたにく", "とりにく"],
   ["おさけ", "ワイン", "ビール"], ["はい", "ええ"], ["かいしゃ", "じむしょ"], ["かします", "あげます"], ["かります", "もらいます"],
-  ["おしえます", "ならいます"], ["よみます", "べんきょうします"], ["ごはん", "ばんごはん", "ひるごはん", "あさごはん"], ["きます", "かえります"]];
+  ["おしえます", "ならいます"], ["よみます", "べんきょうします"], ["ごはん", "ばんごはん", "ひるごはん", "あさごはん"], ["きます", "かえります"],
+  ["ハンサム", "きれい", "すてき"], ["おもしろい", "たのしい"], ["あつい", "つめたい", "さむい"], ["どう", "どんな", "なん"], ["べんきょう", "べんきょうします"],
+  ["しごと", "はたらきます"], ["たべもの", "ごはん"], ["ところ", "ここ"], ["げんき", "いい"], ["たかい", "おおきい"], ["ひくい", "ちいさい"], ["しずか", "ひま"]];
 const synOf = kana => new Set(SYN.filter(g => g.includes(kana)).flat());
 
 const isKata = s => /^[゠-ヿー・]+$/.test(s);
 export const lessonsLabel = ls => (!ls || !ls.length) ? "—" : ls.length === LESSONS.length ? `1–${LESSONS[LESSONS.length - 1]}` : ls.join(", ");
-const wordHTML = v => `<span class="w-kana">${esc(v.kana)}</span>${v.kanji ? `<span class="w-kanji">${esc(v.kanji)}</span>` : ""}`;
+const wordHTML = v => `<span class="w-kana">${esc(v.kana)}${v.na ? `<small class="na">[な]</small>` : ""}</span>${v.kanji ? `<span class="w-kanji">${esc(v.kanji)}</span>` : ""}`;
+const altShown = v => v.alt.filter(a => !(v.na && a === v.kana + "な")); // avtomatik "...な" shaklini ko'rsatmaymiz
 
 // Gapni chiroyli ko'rsatish
 const PARTICLES = ["は", "も", "の", "を", "に", "へ", "で", "と", "から", "まで"];
-const QWORDS = ["なん", "なに", "だれ", "どなた", "どこ", "どちら", "いつ", "いくら", "なんじ", "なんさい", "なんようび", "なんばん", "なんがい"];
+const QWORDS = ["なん", "なに", "だれ", "どなた", "どこ", "どちら", "いつ", "いくら", "なんじ", "なんさい", "なんようび", "なんばん", "なんがい", "どう", "どんな", "どれ"];
 const QSYN = { なん: ["なに"], なに: ["なん"], だれ: ["どなた"], どなた: ["だれ"], どこ: ["どちら"], どちら: ["どこ"] };
 const PEXCL = { は: ["も"], も: ["は"], を: ["は", "も"], に: ["へ", "と"], へ: ["に"], と: ["に"] };
 const PTAUGHT = { は: 1, も: 1, の: 1, に: 4, から: 4, まで: 4, と: 4, へ: 5, で: 5, を: 6 };
@@ -275,7 +278,7 @@ export async function viewVocabHome(params) {
     <div class="unit-tabs">${LESSONS.map(l => `<a class="${l === tab ? "on" : ""}" href="#/vocab?tab=${l}">${t("lesson_n", l)}</a>`).join("")}</div>
     <div class="tbl-wrap"><table class="tbl vtable"><tr><th></th><th>${t("word")}</th><th>Kanji</th><th>${t("meaning")}</th><th></th></tr>
       ${VOCAB.filter(v => v.l === tab).map(v => { const s = stats[v.id];
-        return `<tr><td class="vp">${v.p || ""}</td><td class="jk2">${esc(v.kana)}${v.alt.length ? ` <small class="muted">(${v.alt.map(esc).join(", ")})</small>` : ""}</td><td class="jk">${esc(v.kanji)}</td>
+        return `<tr><td class="vp">${v.p || ""}</td><td class="jk2">${esc(v.kana)}${v.na ? "<small>[な]</small>" : ""}${altShown(v).length ? ` <small class="muted">(${altShown(v).map(esc).join(", ")})</small>` : ""}</td><td class="jk">${esc(v.kanji)}</td>
           <td>${esc(v.uz)} ${s ? (s.rv ? `<span class="tag bad">${t("mistake_tag")}</span>` : s.s >= MASTER ? `<span class="tag ok">✓</span>` : "") : ""}</td><td class="r">${sayBtn(v.kana)}</td></tr>`; }).join("")}
     </table></div>
   </section>`, "vocab");
@@ -328,7 +331,7 @@ export async function viewVocabQuiz(params) {
     return out;
   };
   const explain = v => `<div class="vcard"><div class="vc-p">${v.p || ""}</div><div><div class="vc-w">${wordHTML(v)}</div><div class="vc-m">${esc(v.uz)}</div>
-    ${v.alt.length ? `<div class="muted">${t("other_form")}: ${v.alt.map(esc).join(", ")}</div>` : ""}<div class="muted small">${t("lesson_n", v.l)}</div></div>${sayBtn(v.kana)}</div>`;
+    ${altShown(v).length ? `<div class="muted">${t("other_form")}: ${altShown(v).map(esc).join(", ")}</div>` : ""}<div class="muted small">${t("lesson_n", v.l)}</div></div>${sayBtn(v.kana)}</div>`;
 
   const questions = shuffle(pool).slice(0, Math.min(nQ, pool.length)).map(v => {
     const qt = pickType(v);

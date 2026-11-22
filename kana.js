@@ -1,5 +1,5 @@
 // Romaji → kana konvertor va ekrandagi hiragana/katakana klaviatura.
-import { t } from "./i18n.js?v=7";
+import { t } from "./i18n.js?v=8";
 
 // ---------- Romaji jadvali ----------
 const T = {};
