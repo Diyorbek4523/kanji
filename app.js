@@ -8,10 +8,10 @@ import {
 import {
   getFirestore, doc, getDoc, getDocs, updateDoc, collection, query, orderBy, limit, writeBatch,
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-import { firebaseConfig, ADMIN_USERNAME, SITE_NAME } from "./firebase-config.js?v=9";
-import { KANJI } from "./kanji-data.js?v=9";
-import { t, LANG, LANGS, setLang } from "./i18n.js?v=9";
-import { initPractice, viewVocabHome, viewVocabQuiz, viewSentHome, viewSentQuiz, describeAnswer, qtLabel, kindLabel, lessonsLabel, practiceSummaries } from "./practice.js?v=9";
+import { firebaseConfig, ADMIN_USERNAME, SITE_NAME } from "./firebase-config.js?v=10";
+import { KANJI } from "./kanji-data.js?v=10";
+import { t, LANG, LANGS, setLang } from "./i18n.js?v=10";
+import { initPractice, viewVocabHome, viewVocabQuiz, viewSentHome, viewSentQuiz, describeAnswer, qtLabel, kindLabel, lessonsLabel, practiceSummaries } from "./practice.js?v=10";
 
 // ---------------- Sozlamalar ----------------
 const MASTER_STREAK = 3;   // ketma-ket 3 marta to'g'ri = o'zlashtirilgan
@@ -94,6 +94,9 @@ function renderHeader(active) {
   if (me) $("#um-name").textContent = me.username;
   $("#um-pw").textContent = t("change_pw");
   $("#logout").textContent = t("logout");
+  const dark = document.documentElement.dataset.theme === "dark";
+  $("#themesw").textContent = dark ? "☀️" : "🌙";
+  $("#themesw").title = t(dark ? "theme_light" : "theme_dark");
   $("#langsw").innerHTML = LANGS.map(l => `<button type="button" data-lang="${l}" class="${l === LANG() ? "on" : ""}">${l.toUpperCase()}</button>`).join("");
 }
 
@@ -781,6 +784,13 @@ $("#langsw").addEventListener("click", e => {
   setLang(b.dataset.lang);
   if (inQuiz && !confirm(t("lang_quiz_confirm"))) { renderHeader(curActive); return; }
   route();
+});
+// Tungi / kunduzgi rejim (tanlov brauzerda saqlanadi)
+$("#themesw").addEventListener("click", () => {
+  const th = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = th;
+  try { localStorage.setItem("theme", th); } catch (e) {}
+  renderHeader(curActive);
 });
 document.title = SITE_NAME;
 renderHeader();

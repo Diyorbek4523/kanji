@@ -2,10 +2,10 @@
 import {
   doc, getDoc, collection, writeBatch,
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-import { VOCAB, LESSONS } from "./vocab-data.js?v=9";
-import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=9";
-import { attachKana, normJP, toHira } from "./kana.js?v=9";
-import { t } from "./i18n.js?v=9";
+import { VOCAB, LESSONS } from "./vocab-data.js?v=10";
+import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=10";
+import { attachKana, normJP, toHira } from "./kana.js?v=10";
+import { t } from "./i18n.js?v=10";
 
 let C; // app.js dan beriladigan yordamchilar
 export function initPractice(ctx) { C = ctx; }

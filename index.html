@@ -8,15 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=9">
+<script>try{var th=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=th}catch(e){}</script>
+<meta name="theme-color" content="#1f1c18">
+<link rel="stylesheet" href="style.css?v=11">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c8402f'/><text x='50' y='72' font-size='62' text-anchor='middle' fill='white'>漢</text></svg>">
 </head>
 <body>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="#/"><span class="seal">漢</span>Kanji Dojo</a>
+    <a class="brand" href="#/"><span class="seal">漢</span><span class="brand-t">Kanji Dojo</span></a>
     <nav class="nav" id="nav"></nav>
     <div class="langsw" id="langsw"></div>
+    <button type="button" class="themesw" id="themesw"></button>
     <details class="usermenu" id="usermenu" hidden>
       <summary id="um-name"></summary>
       <div class="menu">
@@ -31,6 +34,6 @@
 </main>
 <footer class="foot wrap">ユニット 1–10 · 112 kanji</footer>
 <noscript><p style="text-align:center">JavaScript kerak / JavaScript is required / Нужен JavaScript.</p></noscript>
-<script type="module" src="app.js?v=9"></script>
+<script type="module" src="app.js?v=10"></script>
 </body>
 </html>

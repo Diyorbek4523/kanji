@@ -1,9 +1,9 @@
 // Tarjimalar: o'zbek (uz), ingliz (en), rus (ru). Til tanlovi brauzerda saqlanadi.
-import { KANJI } from "./kanji-data.js?v=9";
-import { VOCAB } from "./vocab-data.js?v=9";
-import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=9";
-import { CONTENT_EN } from "./content-en.js?v=9";
-import { CONTENT_RU } from "./content-ru.js?v=9";
+import { KANJI } from "./kanji-data.js?v=10";
+import { VOCAB } from "./vocab-data.js?v=10";
+import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=10";
+import { CONTENT_EN } from "./content-en.js?v=10";
+import { CONTENT_RU } from "./content-ru.js?v=10";
 
 export const LANGS = ["uz", "en", "ru"];
 let lang = (() => {
@@ -77,6 +77,7 @@ const D = {
     study_sub: "Kanjini bosing — rasm, o'qilishi, misol va eslab qolish usuli chiqadi. Ko'rinishlarni yashirib, o'zingizni tekshiring.",
     picture: "Rasm", in_mistake_list: "xatolar ro'yxatida", you_stats: "Sizda",
     page_not_found: "Sahifa topilmadi.", error_happened: "Xatolik yuz berdi",
+    theme_dark: "Tungi rejim", theme_light: "Kunduzgi rejim",
     lang_quiz_confirm: "Til o'zgardi. Testni yangi tilda qaytadan boshlaysizmi? (Joriy javoblar saqlanmaydi)",
     account_deleted: "Bu akkaunt o'chirilgan. Yangi login bilan ro'yxatdan o'ting.", account_blocked: "Akkauntingiz admin tomonidan bloklangan.",
     load_failed: "Ma'lumotlarni yuklab bo'lmadi",
@@ -168,6 +169,7 @@ const D = {
     study_sub: "Tap a kanji to see its picture, readings, an example and a memory tip. Hide parts to test yourself.",
     picture: "Picture", in_mistake_list: "in mistake list", you_stats: "Your stats",
     page_not_found: "Page not found.", error_happened: "An error occurred",
+    theme_dark: "Night mode", theme_light: "Day mode",
     lang_quiz_confirm: "Language changed. Restart the test in the new language? (Current answers will not be saved)",
     account_deleted: "This account has been deleted. Sign up with a new username.", account_blocked: "Your account has been blocked by the admin.",
     load_failed: "Could not load data",
@@ -258,6 +260,7 @@ const D = {
     study_sub: "Нажмите на кандзи — появятся картинка, чтения, пример и подсказка для запоминания. Скрывайте части, чтобы проверить себя.",
     picture: "Картинка", in_mistake_list: "в списке ошибок", you_stats: "Ваша статистика",
     page_not_found: "Страница не найдена.", error_happened: "Произошла ошибка",
+    theme_dark: "Ночной режим", theme_light: "Дневной режим",
     lang_quiz_confirm: "Язык изменён. Начать тест заново на новом языке? (Текущие ответы не сохранятся)",
     account_deleted: "Этот аккаунт удалён. Зарегистрируйтесь с новым логином.", account_blocked: "Ваш аккаунт заблокирован админом.",
     load_failed: "Не удалось загрузить данные",
