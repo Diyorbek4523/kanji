@@ -8,10 +8,10 @@ import {
 import {
   getFirestore, doc, getDoc, getDocs, updateDoc, collection, query, orderBy, limit, writeBatch,
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-import { firebaseConfig, ADMIN_USERNAME, SITE_NAME } from "./firebase-config.js?v=8";
-import { KANJI } from "./kanji-data.js?v=8";
-import { t, LANG, LANGS, setLang } from "./i18n.js?v=8";
-import { initPractice, viewVocabHome, viewVocabQuiz, viewSentHome, viewSentQuiz, describeAnswer, qtLabel, kindLabel, lessonsLabel, practiceSummaries } from "./practice.js?v=8";
+import { firebaseConfig, ADMIN_USERNAME, SITE_NAME } from "./firebase-config.js?v=9";
+import { KANJI } from "./kanji-data.js?v=9";
+import { t, LANG, LANGS, setLang } from "./i18n.js?v=9";
+import { initPractice, viewVocabHome, viewVocabQuiz, viewSentHome, viewSentQuiz, describeAnswer, qtLabel, kindLabel, lessonsLabel, practiceSummaries } from "./practice.js?v=9";
 
 // ---------------- Sozlamalar ----------------
 const MASTER_STREAK = 3;   // ketma-ket 3 marta to'g'ri = o'zlashtirilgan

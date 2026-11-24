@@ -2,10 +2,10 @@
 import {
   doc, getDoc, collection, writeBatch,
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-import { VOCAB, LESSONS } from "./vocab-data.js?v=8";
-import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=8";
-import { attachKana, normJP, toHira } from "./kana.js?v=8";
-import { t } from "./i18n.js?v=8";
+import { VOCAB, LESSONS } from "./vocab-data.js?v=9";
+import { SENTENCES, GRAMMAR, SENT_LESSONS } from "./sentence-data.js?v=9";
+import { attachKana, normJP, toHira } from "./kana.js?v=9";
+import { t } from "./i18n.js?v=9";
 
 let C; // app.js dan beriladigan yordamchilar
 export function initPractice(ctx) { C = ctx; }
@@ -28,7 +28,9 @@ const SYN = [["だれ", "どなた"], ["なん", "なに"], ["あのひと", "�
   ["おさけ", "ワイン", "ビール"], ["はい", "ええ"], ["かいしゃ", "じむしょ"], ["かします", "あげます"], ["かります", "もらいます"],
   ["おしえます", "ならいます"], ["よみます", "べんきょうします"], ["ごはん", "ばんごはん", "ひるごはん", "あさごはん"], ["きます", "かえります"],
   ["ハンサム", "きれい", "すてき"], ["おもしろい", "たのしい"], ["あつい", "つめたい", "さむい"], ["どう", "どんな", "なん"], ["べんきょう", "べんきょうします"],
-  ["しごと", "はたらきます"], ["たべもの", "ごはん"], ["ところ", "ここ"], ["げんき", "いい"], ["たかい", "おおきい"], ["ひくい", "ちいさい"], ["しずか", "ひま"]];
+  ["しごと", "はたらきます"], ["たべもの", "ごはん"], ["ところ", "ここ"], ["げんき", "いい"], ["たかい", "おおきい"], ["ひくい", "ちいさい"], ["しずか", "ひま"],
+  ["ごしゅじん", "おっと", "しゅじん"], ["おくさん", "つま", "かない"], ["チケット", "きっぷ"], ["ようじ", "しごと"], ["じ", "かんじ", "ひらがな", "かたかな", "ローマじ"],
+  ["よく", "たくさん"], ["すこし", "あまり", "だいたい"], ["りょうり", "たべもの", "ごはん"], ["うた", "おんがく", "カラオケ"]];
 const synOf = kana => new Set(SYN.filter(g => g.includes(kana)).flat());
 
 const isKata = s => /^[゠-ヿー・]+$/.test(s);
@@ -37,11 +39,11 @@ const wordHTML = v => `<span class="w-kana">${esc(v.kana)}${v.na ? `<small class
 const altShown = v => v.alt.filter(a => !(v.na && a === v.kana + "な")); // avtomatik "...な" shaklini ko'rsatmaymiz
 
 // Gapni chiroyli ko'rsatish
-const PARTICLES = ["は", "も", "の", "を", "に", "へ", "で", "と", "から", "まで"];
-const QWORDS = ["なん", "なに", "だれ", "どなた", "どこ", "どちら", "いつ", "いくら", "なんじ", "なんさい", "なんようび", "なんばん", "なんがい", "どう", "どんな", "どれ"];
+const PARTICLES = ["は", "も", "の", "を", "に", "へ", "で", "と", "が", "から", "まで"];
+const QWORDS = ["なん", "なに", "だれ", "どなた", "どこ", "どちら", "いつ", "いくら", "なんじ", "なんさい", "なんようび", "なんばん", "なんがい", "どう", "どんな", "どれ", "どうして"];
 const QSYN = { なん: ["なに"], なに: ["なん"], だれ: ["どなた"], どなた: ["だれ"], どこ: ["どちら"], どちら: ["どこ"] };
-const PEXCL = { は: ["も"], も: ["は"], を: ["は", "も"], に: ["へ", "と"], へ: ["に"], と: ["に"] };
-const PTAUGHT = { は: 1, も: 1, の: 1, に: 4, から: 4, まで: 4, と: 4, へ: 5, で: 5, を: 6 };
+const PEXCL = { は: ["も", "が"], も: ["は", "が"], が: ["は", "も"], を: ["は", "も"], に: ["へ", "と"], へ: ["に"], と: ["に"] };
+const PTAUGHT = { は: 1, も: 1, の: 1, に: 4, から: 4, まで: 4, と: 4, へ: 5, で: 5, を: 6, が: 9 };
 // Bo'laklar orasiga bo'sh joy: keyingi bo'lak yuklama yoki です/じゃ bo'lmasa (darslikdagidek: わたしは ときどき テニスを します。)
 export const jpText = chunks => chunks.map((c, i) => {
   const n = chunks[i + 1];

@@ -1,4 +1,4 @@
-// Gaplar va grammatika: 1–7 mavzu.
+// Gaplar va grammatika: 1–9 mavzu.
 // Gap: [id, mavzu, "bo'laklar|bilan|ajratilgan", "o'zbekcha tarjima", [grammatika id], [muqobil to'g'ri tartiblar]]
 // "w" = Word fayldagi (darslik) gap, "x" = qo'shimcha gap (faqat shu mavzugacha bo'lgan so'zlardan).
 
@@ -69,6 +69,13 @@ export const GRAMMAR = {
     { id: "8e", p: "とても ／ あまり ～ない", uz: "とても — \"juda\" (tasdiq bilan). あまり — \"unchalik ... emas\", faqat inkor bilan: あまり おもしろくないです.", ex: ["とても おいしいです。", "あまり さむくないです。"] },
     { id: "8f", p: "S1 が、S2 ／ そして", uz: "が (gaplar orasida) — \"lekin\": むずかしいですが、おもしろいです. そして — \"va, yana\": ikki gapni qo'shadi.", ex: ["にほんごは むずかしいですが、おもしろいです。", "この まちは きれいです。そして しずかです。"] },
     { id: "8g", p: "どれ", uz: "どれ — \"qaysi biri?\" (uch va undan ko'p narsa ichidan).", ex: ["あなたの かばんは どれですか。"] },
+  ],
+  9: [
+    { id: "9a", p: "N が あります ／ わかります", uz: "あります (bor), わかります (tushunaman) bilan obyekt を emas, が bilan keladi: じかんが あります — vaqtim bor; にほんごが わかります — yapon tilini tushunaman.", ex: ["わたしは にほんごが わかります。", "こまかい おかねが ありますか。"] },
+    { id: "9b", p: "N が すき／きらい／じょうず／へた です", uz: "Yoqtirish va mahorat: N が すきです — N ni yoqtiraman; N が じょうずです — N ga ustaman. Inkori: すきじゃ ありません.", ex: ["わたしは りょうりが すきです。", "カリナさんは えが じょうずです。"] },
+    { id: "9c", p: "どんな N が すきですか", uz: "Turini so'rash: \"Qanday N ni yoqtirasiz?\" — javobda aniq nom aytiladi: サッカーが すきです.", ex: ["どんな スポーツが すきですか。……サッカーが すきです。"] },
+    { id: "9d", p: "よく／だいたい／すこし／あまり／ぜんぜん", uz: "Daraja: よく わかります (yaxshi), だいたい (deyarli), すこし (ozgina); あまり (unchalik) va ぜんぜん (umuman) — faqat inkor bilan: ぜんぜん わかりません. Miqdor: たくさん あります (ko'p), すこし あります (oz).", ex: ["えいごが よく わかります。", "かんじが ぜんぜん わかりません。", "おかねが たくさん あります。"] },
+    { id: "9e", p: "S1 から、S2 ／ どうして ～か", uz: "から — sabab: \"S1 bo'lgani uchun, S2\". どうして — \"nima uchun?\"; javob ～から bilan tugaydi: ようじが ありますから.", ex: ["じかんが ありませんから、しんぶんを よみません。", "どうして はやく かえりますか。……ようじが ありますから。"] },
   ],
 };
 
@@ -298,6 +305,49 @@ const RAW = [
   ["x8-33", 8, "ふじさん|は|ゆうめいな|やま|です。", "Fudzi — mashhur tog'.", ["8c"]],
   ["x8-34", 8, "りょう|は|あたらしい|です。", "Yotoqxona yangi.", ["8a"]],
   ["x8-35", 8, "わたし|の|へや|は|ちいさい|です。", "Mening xonam kichik.", ["8a"]],
+  // ---------- 9-mavzu ----------
+  ["x9-1", 9, "わたし|は|りょうり|が|すき|です。", "Men taomlarni yaxshi ko'raman.", ["9b"]],
+  ["x9-2", 9, "どんな|スポーツ|が|すき|ですか。", "Qanday sportni yoqtirasiz?", ["9c"]],
+  ["x9-3", 9, "サッカー|が|すき|です。", "Futbolni yoqtiraman.", ["9b"]],
+  ["x9-4", 9, "カリナさん|は|え|が|じょうず|です。", "Karina rasm chizishga usta.", ["9b"]],
+  ["x9-5", 9, "わたし|は|うた|が|へた|です。", "Men qo'shiq aytishga no'noqman.", ["9b"]],
+  ["x9-6", 9, "ミラーさん|は|かんじ|が|わかりますか。", "Janob Miller kanjini tushunadimi?", ["9a"]],
+  ["x9-7", 9, "はい、|すこし|わかります。", "Ha, ozgina tushunadi.", ["9d"]],
+  ["x9-8", 9, "いいえ、|ぜんぜん|わかりません。", "Yo'q, umuman tushunmaydi.", ["9d"]],
+  ["x9-9", 9, "わたし|は|にほんご|が|だいたい|わかります。", "Men yapon tilini deyarli tushunaman.", ["9d"]],
+  ["x9-10", 9, "わたし|は|えいご|が|よく|わかります。", "Men ingliz tilini yaxshi tushunaman.", ["9d"]],
+  ["x9-11", 9, "ひらがな|が|わかりますか。", "Hiraganani tushunasizmi?", ["9a"]],
+  ["x9-12", 9, "こまかい おかね|が|ありますか。", "Mayda pulingiz bormi?", ["9a"]],
+  ["x9-13", 9, "いいえ、|こまかい おかね|は|ありません。", "Yo'q, mayda pulim yo'q.", ["9a"]],
+  ["x9-14", 9, "きょう|は|じかん|が|ありません。", "Bugun vaqtim yo'q.", ["9a"]],
+  ["x9-15", 9, "こんばん|やくそく|が|あります。", "Bugun kechqurun va'dam (uchrashuvim) bor.", ["9a"]],
+  ["x9-16", 9, "あした|ようじ|が|あります。", "Ertaga ishim bor.", ["9a"]],
+  ["x9-17", 9, "おかね|が|たくさん|あります。", "Pulim ko'p.", ["9d"]],
+  ["x9-18", 9, "じかん|が|あまり|ありません。", "Vaqtim unchalik yo'q.", ["9d"]],
+  ["x9-19", 9, "コンサート|の|チケット|が|あります。", "Konsert chiptasi bor.", ["9a"]],
+  ["x9-20", 9, "どうして|はやく|かえりますか。", "Nega erta qaytasiz?", ["9e"]],
+  ["x9-21", 9, "ようじ|が|ありますから。", "Chunki ishim bor.", ["9e"]],
+  ["x9-22", 9, "じかん|が|ありませんから、|しんぶん|を|よみません。", "Vaqtim yo'qligi uchun gazeta o'qimayman.", ["9e"]],
+  ["x9-23", 9, "どうして|きのう|はやく|かえりましたか。", "Nega kecha erta qaytdingiz?", ["9e"]],
+  ["x9-24", 9, "やくそく|が|ありましたから。", "Chunki va'dam bor edi.", ["9e"]],
+  ["x9-25", 9, "ごしゅじん|は|やきゅう|が|すき|ですか。", "Eringiz beysbolni yoqtiradimi?", ["9b"]],
+  ["x9-26", 9, "はい、|とても|すき|です。", "Ha, juda yoqtiradi.", ["9b", "8e"]],
+  ["x9-27", 9, "おくさん|は|ダンス|が|じょうず|ですね。", "Xotiningiz raqsga usta ekan-a.", ["9b"]],
+  ["x9-28", 9, "つま|は|りょうり|が|じょうず|です。", "Xotinim ovqat pishirishga usta.", ["9b"]],
+  ["x9-29", 9, "わたし|は|ジャズ|が|きらい|です。", "Men jazni yoqtirmayman.", ["9b"]],
+  ["x9-30", 9, "どんな|おんがく|が|すき|ですか。", "Qanday musiqani yoqtirasiz?", ["9c"]],
+  ["x9-31", 9, "クラシック|が|すき|です。", "Klassik musiqani yoqtiraman.", ["9b"]],
+  ["x9-32", 9, "いっしょに|カラオケ|へ|いきませんか。", "Birga karaokega bormaymizmi?", ["6e"]],
+  ["x9-33", 9, "すみません、|きょう|は|じかん|が|ありません。", "Kechirasiz, bugun vaqtim yo'q.", ["9a"]],
+  ["x9-34", 9, "そう|ですか。|ざんねんですね。", "Shundaymi? Afsus.", []],
+  ["x9-35", 9, "かぶき|が|すき|ですか。", "Kabukini yoqtirasizmi?", ["9b"]],
+  ["x9-36", 9, "いいえ、|あまり|すき|じゃ ありません。", "Yo'q, unchalik yoqtirmayman.", ["9b", "9d"]],
+  ["x9-37", 9, "わたし|は|かたかな|が|ぜんぜん|わかりません。", "Men katakanani umuman tushunmayman.", ["9d"]],
+  ["x9-38", 9, "ローマじ|で|かきます。", "Rim (lotin) yozuvida yozaman.", ["7a"]],
+  ["x9-39", 9, "どんな|のみもの|が|すき|ですか。", "Qanday ichimlikni yoqtirasiz?", ["9c"]],
+  ["x9-40", 9, "おちゃ|が|すき|です。", "Choyni yoqtiraman.", ["9b"]],
+  ["x9-41", 9, "こども|は|うた|が|すき|です。", "Bolam qo'shiqni yaxshi ko'radi.", ["9b"]],
+  ["x9-42", 9, "この|じ|は|ひらがな|ですか、|かたかな|ですか。", "Bu harf hiraganami yoki katakanami?", ["2d"]],
 ];
 
 export const SENTENCES = RAW.map(([id, l, jp, uz, g, alt]) => ({

@@ -1,9 +1,9 @@
 // Tarjimalar: o'zbek (uz), ingliz (en), rus (ru). Til tanlovi brauzerda saqlanadi.
-import { KANJI } from "./kanji-data.js?v=8";
-import { VOCAB } from "./vocab-data.js?v=8";
-import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=8";
-import { CONTENT_EN } from "./content-en.js?v=8";
-import { CONTENT_RU } from "./content-ru.js?v=8";
+import { KANJI } from "./kanji-data.js?v=9";
+import { VOCAB } from "./vocab-data.js?v=9";
+import { SENTENCES, GRAMMAR } from "./sentence-data.js?v=9";
+import { CONTENT_EN } from "./content-en.js?v=9";
+import { CONTENT_RU } from "./content-ru.js?v=9";
 
 export const LANGS = ["uz", "en", "ru"];
 let lang = (() => {
